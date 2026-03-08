@@ -359,6 +359,24 @@ textarea::placeholder{color:#9ca3af;}
 .suggest-trigger:hover{background:#f3f4f6;color:#374151;}
 .suggest-trigger:active{transform:scale(0.97);}
 
+/* FOOTER PRIVACIDAD */
+.privacy-footer{
+  width:100%;
+  max-width:700px;
+  text-align:center;
+  font-size:11px;
+  color:#9ca3af;
+  padding:16px 0 8px;
+  margin-top:8px;
+  line-height:1.6;
+}
+.privacy-footer a{
+  color:#9ca3af;
+  text-decoration:underline;
+  text-underline-offset:2px;
+}
+.privacy-footer a:hover{color:#6b7280;}
+
 /* POPUP OVERLAY */
 .popup-overlay{
   position:fixed;inset:0;
@@ -568,7 +586,11 @@ textarea::placeholder{color:#9ca3af;}
 
 </div>
 
-<!-- POPUP SUGERENCIAS -->
+<!-- FOOTER PRIVACIDAD -->
+<div class="privacy-footer">
+  🔒 Tus preguntas viajan cifradas y no se almacenan. Esta app no recopila datos personales.
+  <a href="https://groq.com/privacy-policy" target="_blank" rel="noopener">Política de Groq</a>
+</div>
 <div class="popup-overlay" id="popupOverlay" onclick="closePopup()"></div>
 <div class="popup" id="popup">
   <div class="popup-header">
