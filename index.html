@@ -302,6 +302,102 @@ textarea::placeholder{color:#9ca3af;}
   color:#6b7280;
 }
 
+/* INPUT FOOTER */
+.input-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-top:8px;
+}
+.suggest-trigger{
+  background:none;
+  border:1px solid #e5e7eb;
+  border-radius:20px;
+  padding:5px 12px;
+  font-size:12px;
+  color:#6b7280;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  transition:.2s;
+}
+.suggest-trigger:hover{
+  background:#f3f4f6;
+  color:#374151;
+  border-color:#d1d5db;
+}
+
+/* POPUP OVERLAY */
+.popup-overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.45);
+  z-index:100;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s ease;
+  backdrop-filter:blur(3px);
+}
+.popup-overlay.active{opacity:1;pointer-events:all;}
+
+/* POPUP */
+.popup{
+  position:fixed;
+  bottom:0;left:0;right:0;
+  background:white;
+  border-radius:20px 20px 0 0;
+  padding:24px 20px 36px;
+  z-index:101;
+  transform:translateY(100%);
+  transition:transform .3s cubic-bezier(.32,.72,0,1);
+  max-width:600px;
+  margin:0 auto;
+}
+.popup.active{transform:translateY(0);}
+
+.popup-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:6px;
+}
+.popup-title{
+  font-size:16px;
+  font-weight:600;
+  color:#111827;
+}
+.popup-close{
+  background:none;border:none;
+  font-size:16px;color:#9ca3af;
+  cursor:pointer;padding:4px;
+  line-height:1;
+  transition:.2s;
+}
+.popup-close:hover{color:#374151;}
+.popup-sub{
+  font-size:13px;color:#9ca3af;
+  margin-bottom:16px;
+}
+.popup-list{
+  display:flex;flex-direction:column;gap:8px;
+}
+.popup-btn{
+  background:#f9fafb;
+  border:1px solid #e5e7eb;
+  border-radius:12px;
+  padding:12px 16px;
+  font-size:14px;
+  font-family:'Inter',sans-serif;
+  color:#374151;
+  text-align:left;
+  cursor:pointer;
+  transition:all .2s ease;
+}
+.popup-btn:hover{
+  background:#3b82f6;
+  color:white;
+  border-color:#3b82f6;
+  transform:translateX(4px);
+}
+
 /* RESPONSIVE */
 @media(max-width:900px){h1{font-size:38px;}}
 @media(max-width:600px){
@@ -335,15 +431,6 @@ textarea::placeholder{color:#9ca3af;}
   <!-- Chat -->
   <div class="chat-area" id="chatArea"></div>
 
-  <!-- Sugerencias -->
-  <div class="suggestions" id="suggestions">
-    <button class="sug-btn" onclick="useSuggestion(this)">¿Qué hago cuando me siento solo?</button>
-    <button class="sug-btn" onclick="useSuggestion(this)">Necesito paz en mi corazón</button>
-    <button class="sug-btn" onclick="useSuggestion(this)">¿Cómo superar el miedo?</button>
-    <button class="sug-btn" onclick="useSuggestion(this)">Estoy pasando por un momento difícil</button>
-    <button class="sug-btn" onclick="useSuggestion(this)">¿Me amas aunque he fallado?</button>
-  </div>
-
   <!-- Input -->
   <div class="input-card">
     <div class="input-card-label">Tu pregunta</div>
@@ -357,9 +444,32 @@ textarea::placeholder{color:#9ca3af;}
       ></textarea>
       <button class="send-btn" id="sendBtn" onclick="sendMessage()">Enviar</button>
     </div>
-    <p class="hint">Enter para enviar · Shift+Enter para nueva línea</p>
+    <div class="input-footer">
+      <p class="hint">Enter para enviar · Shift+Enter para nueva línea</p>
+      <button class="suggest-trigger" onclick="openPopup()">💡 Ver ejemplos</button>
+    </div>
   </div>
 
+</div>
+
+<!-- POPUP SUGERENCIAS -->
+<div class="popup-overlay" id="popupOverlay" onclick="closePopup()"></div>
+<div class="popup" id="popup">
+  <div class="popup-header">
+    <span class="popup-title">¿No sabes por dónde empezar?</span>
+    <button class="popup-close" onclick="closePopup()">✕</button>
+  </div>
+  <p class="popup-sub">Toca cualquier pregunta para enviarla directamente</p>
+  <div class="popup-list">
+    <button class="popup-btn" onclick="useSuggestion(this)">¿Qué hago cuando me siento solo?</button>
+    <button class="popup-btn" onclick="useSuggestion(this)">Necesito paz en mi corazón</button>
+    <button class="popup-btn" onclick="useSuggestion(this)">¿Cómo superar el miedo?</button>
+    <button class="popup-btn" onclick="useSuggestion(this)">Estoy pasando por un momento difícil</button>
+    <button class="popup-btn" onclick="useSuggestion(this)">¿Me amas aunque he fallado?</button>
+    <button class="popup-btn" onclick="useSuggestion(this)">¿Cuál es el propósito de mi vida?</button>
+    <button class="popup-btn" onclick="useSuggestion(this)">Necesito fuerzas para seguir</button>
+    <button class="popup-btn" onclick="useSuggestion(this)">¿Cómo perdonar a alguien que me hizo daño?</button>
+  </div>
 </div>
 
 <script>
@@ -420,6 +530,14 @@ const _s = "hcd2025xPalabra";
 function _dk(e,s){const r=atob(e);let k='';for(let i=0;i<r.length;i++)k+=String.fromCharCode(r.charCodeAt(i)^s.charCodeAt(i%s.length));return k;}
 function getApiKey(){return _dk(_enc,_s);}
 
+function openPopup(){
+  document.getElementById('popup').classList.add('active');
+  document.getElementById('popupOverlay').classList.add('active');
+}
+function closePopup(){
+  document.getElementById('popup').classList.remove('active');
+  document.getElementById('popupOverlay').classList.remove('active');
+}
 function autoResize(el){
   el.style.height='auto';
   el.style.height=Math.min(el.scrollHeight,120)+'px';
@@ -428,6 +546,7 @@ function handleKey(e){
   if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}
 }
 function useSuggestion(btn){
+  closePopup();
   document.getElementById('userInput').value=btn.textContent;
   autoResize(document.getElementById('userInput'));
   sendMessage();
@@ -478,7 +597,6 @@ function appendError(msg){
 }
 function hideWelcome(){
   const w=document.getElementById('welcomeMsg');if(w)w.remove();
-  const s=document.getElementById('suggestions');if(s)s.style.display='none';
 }
 function scrollChat(){
   const c=document.getElementById('chatArea');
@@ -491,12 +609,11 @@ function escapeHtml(str){
 }
 function resetChat(){
   document.getElementById('chatArea').innerHTML=welcomeHTML();
-  const s=document.getElementById('suggestions');
-  if(s)s.style.display='flex';
   document.getElementById('userInput').value='';
   document.getElementById('userInput').style.height='auto';
   isLoading=false;
   document.getElementById('sendBtn').disabled=false;
+  closePopup();
 }
 async function sendMessage(){
   if(isLoading)return;
