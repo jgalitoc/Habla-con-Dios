@@ -231,6 +231,48 @@ h1{
   font-style:italic;
 }
 
+/* BANNER IA DISCLAIMER */
+.ia-banner{
+  background:#eff6ff;
+  border:1px solid #bfdbfe;
+  border-radius:12px;
+  padding:12px 16px;
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  margin-bottom:20px;
+  animation:fadeIn 0.6s ease;
+}
+.ia-banner-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.ia-banner p{font-size:12.5px;color:#1e40af;line-height:1.6;margin:0;}
+.ia-banner strong{font-weight:600;}
+
+/* FEEDBACK */
+.card-feedback{
+  display:flex;align-items:center;gap:8px;
+  margin-top:12px;padding-top:10px;
+  border-top:1px dashed #f3f4f6;
+  font-size:12px;color:#9ca3af;
+}
+.fb-btn{
+  background:none;border:1px solid #e5e7eb;
+  border-radius:8px;padding:4px 10px;
+  font-size:14px;cursor:pointer;transition:.2s;line-height:1;
+}
+.fb-btn:hover{background:#f3f4f6;transform:scale(1.1);}
+.fb-thanks{font-size:12px;color:#6b7280;font-style:italic;}
+
+/* CRISIS CARD */
+.crisis-card{
+  background:#fff7ed;border:1.5px solid #fed7aa;
+  border-radius:14px;padding:20px;
+  font-size:14px;line-height:1.7;color:#374151;
+}
+.crisis-title{font-size:15px;font-weight:700;color:#c2410c;margin-bottom:10px;}
+.crisis-card ul{margin:10px 0 10px 16px;color:#374151;}
+.crisis-card li{margin-bottom:4px;}
+.crisis-sub{font-size:13px;color:#9a3412;font-style:italic;margin-top:10px;}
+
 /* LOADING */
 .loading-msg{
   align-self:flex-start;
@@ -562,6 +604,12 @@ textarea::placeholder{color:#9ca3af;}
     <p class="subtitle">Biblia Reina Valera 1960 · Palabra Viva</p>
   </div>
 
+  <!-- BANNER IA DISCLAIMER -->
+  <div class="ia-banner">
+    <span class="ia-banner-icon">✨</span>
+    <p>Esta app usa <strong>Inteligencia Artificial</strong> para inspirarte con la Palabra de Dios. No simula ni reemplaza a Dios, a un pastor, ni a la oración real. Úsala como un devocional digital.</p>
+  </div>
+
   <!-- Chat -->
   <div class="chat-area" id="chatArea"></div>
 
@@ -588,8 +636,8 @@ textarea::placeholder{color:#9ca3af;}
 
 <!-- FOOTER PRIVACIDAD -->
 <div class="privacy-footer">
-  🔒 Tus preguntas viajan cifradas y no se almacenan. Esta app no recopila datos personales.
-  <a href="https://groq.com/privacy-policy" target="_blank" rel="noopener">Política de Groq</a>
+  🔒 Tus preguntas viajan cifradas vía HTTPS y <strong>no se almacenan</strong>. Esta app usa <strong>Groq AI</strong> (modelo Llama 3.3) para generar respuestas inspiradas en la Biblia RV1960. No recopila datos personales.
+  <a href="https://groq.com/privacy-policy" target="_blank" rel="noopener">Política de privacidad de Groq →</a>
 </div>
 <div class="popup-overlay" id="popupOverlay" onclick="closePopup()"></div>
 <div class="popup" id="popup">
@@ -705,7 +753,7 @@ function appendGodMsg(data){
   div.innerHTML=`
     <div class="god-avatar">
       <div class="god-avatar-icon">✦</div>
-      <span class="god-name">Dios Todopoderoso</span>
+      <span class="god-name">Inspiración Bíblica · IA</span>
     </div>
     <div class="god-card">
       <div class="verse-label">Palabra de Dios · Reina Valera 1960</div>
@@ -714,6 +762,11 @@ function appendGodMsg(data){
       <div class="sep-line"></div>
       <div class="god-message">${escapeHtml(data.mensaje_de_dios)}</div>
       <div class="verse-disclaimer">📖 Te recomendamos verificar este versículo en tu Biblia Reina Valera 1960.</div>
+      <div class="card-feedback">
+        <span>¿Esta respuesta te ayudó?</span>
+        <button class="fb-btn" onclick="sendFeedback(this,'👍')">👍</button>
+        <button class="fb-btn" onclick="sendFeedback(this,'👎')">👎</button>
+      </div>
     </div>`;
   document.getElementById('chatArea').appendChild(div);
   scrollChat();
@@ -734,6 +787,30 @@ function scrollChat(){
     setTimeout(()=>document.getElementById('userInput').scrollIntoView({behavior:'smooth',block:'end'}),100);
   }
 }
+function sendFeedback(btn, tipo){
+  const row=btn.closest('.card-feedback');
+  row.innerHTML=`<span class="fb-thanks">${tipo==='👍'?'¡Gracias! Nos alegra que te haya ayudado 🙏':'Gracias por tu honestidad. Seguimos mejorando 🙏'}</span>`;
+}
+
+function showCrisisAlert(){
+  const div=document.createElement('div');
+  div.className='msg-god';
+  div.innerHTML=`
+    <div class="crisis-card">
+      <div class="crisis-title">🆘 Parece que estás pasando por un momento muy difícil</div>
+      <p>Esta app no puede reemplazar la ayuda profesional que mereces. Por favor comunícate con alguien de confianza o una línea de crisis:</p>
+      <ul>
+        <li>🇪🇸 España: <strong>024</strong> (línea de atención a conducta suicida)</li>
+        <li>🇲🇽 México: <strong>800 290 0024</strong> (SAPTEL 24h)</li>
+        <li>🇦🇷 Argentina: <strong>135</strong> (Centro de Asistencia al Suicida)</li>
+        <li>🌎 Internacional: <strong>findahelpline.com</strong></li>
+      </ul>
+      <p class="crisis-sub">No estás solo. Hay personas reales que quieren ayudarte. 🙏</p>
+    </div>`;
+  document.getElementById('chatArea').appendChild(div);
+  scrollChat();
+}
+
 function escapeHtml(str){
   return String(str)
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
@@ -752,6 +829,15 @@ async function sendMessage(){
   const input=document.getElementById('userInput');
   const text=input.value.trim();
   if(!text)return;
+
+  // Detección de crisis
+  const palabrasCrisis=['quiero morir','me quiero matar','suicidio','suicidarme','no quiero vivir','acabar con mi vida','quitarme la vida'];
+  const textLower=text.toLowerCase();
+  if(palabrasCrisis.some(p=>textLower.includes(p))){
+    input.value='';input.style.height='auto';
+    showCrisisAlert();
+    return;
+  }
   isLoading=true;
   document.getElementById('sendBtn').disabled=true;
   input.value='';input.style.height='auto';
