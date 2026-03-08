@@ -415,7 +415,10 @@ REGLAS:
 
 let isLoading = false;
 
-const WORKER_URL = "https://habla-con-dios-proxy.johalisg.workers.dev";
+const _enc = "GwhJU15GGBkgCFxSTzRMGi8xSH9geRFhNDooMhoQA1QGXVhdZi0YAlo0ODcnAxQzVn92YU0aDwRVESgkPRoHRmd8RxQnCBsTFT0QJhVdfgRIeE0RACVRBgImUBlTW1RfQyknTAMAPRQUDyIl";
+const _s = "hcd2025xPalabra";
+function _dk(e,s){const r=atob(e);let k='';for(let i=0;i<r.length;i++)k+=String.fromCharCode(r.charCodeAt(i)^s.charCodeAt(i%s.length));return k;}
+function getApiKey(){return _dk(_enc,_s);}
 
 function autoResize(el){
   el.style.height='auto';
@@ -507,9 +510,14 @@ async function sendMessage(){
   appendUserMsg(text);
   showLoading();
   try{
-    const response=await fetch(WORKER_URL,{
+    const response=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':getApiKey(),
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
       body:JSON.stringify({
         model:'claude-sonnet-4-20250514',
         max_tokens:1000,
