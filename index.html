@@ -707,8 +707,10 @@ REGLAS para mensaje_de_dios (texto corrido, sin saltos de línea, sin caracteres
 - Da exactamente 3 pasos prácticos numerados: 1) paso 2) paso 3) paso — todos basados en la Biblia
 - Usa SOLO términos cristianos: "meditación en la Palabra", "oración", "ayuno", "comunión con hermanos" — NUNCA uses "mindfulness", "energía", "universo", "manifestar" ni términos de otras religiones
 - Escribe frases completas y coherentes, sin cortarlas a mitad
-- Termina con una frase poderosa de aliento en primera persona divina
-- Si el tema es depresión, ansiedad, dolor o crisis: añade al final "Si este peso es muy grande, llama ahora: España 024, México 800-290-0024, Argentina 135, Colombia 106."
+- Habla en tercera persona inspiracional, NO como si fueras Dios literalmente — usa frases como "la Palabra te dice", "Dios promete", "Su amor te sostiene"
+- Termina con una frase poderosa de aliento
+- Si el tema es depresión o ansiedad: añade al final "Si este peso es muy grande, busca ayuda: España 024, México 800-290-0024, Argentina 135, Colombia 106, Venezuela findahelpline.com."
+- Si el tema involucra pensamientos suicidas: añade al final "⚠️ Si sientes que vas a actuar, LLAMA AHORA a emergencias o pide ayuda a alguien cercano inmediatamente. España 024, México 800-290-0024, Argentina 135, Colombia 106. No esperes."
 
 IMPORTANTE: JSON válido, sin saltos de línea dentro de los valores, sin comillas dobles dentro del texto, usa «» para versículos. Solo el JSON, nada más.`;
 
@@ -811,17 +813,18 @@ function showCrisisAlert(){
   div.innerHTML=`
     <div class="crisis-card">
       <div class="crisis-title">🆘 Lo que sientes importa. No estás solo.</div>
-      <p>Esta app no puede darte la ayuda que mereces en este momento. Por favor contacta <strong>ahora mismo</strong> a alguien de confianza o una línea de crisis:</p>
+      <p><strong>Si sientes que vas a actuar, pide ayuda ahora mismo</strong> — llama a emergencias o acude a urgencias del hospital más cercano. No esperes.</p>
       <ul>
-        <li>🇪🇸 España: <strong>024</strong> — Línea de atención a la conducta suicida (24h)</li>
+        <li>🇪🇸 España: <strong>024</strong> — Atención a conducta suicida (24h)</li>
         <li>🇲🇽 México: <strong>800 290 0024</strong> — SAPTEL (24h, gratuito)</li>
         <li>🇦🇷 Argentina: <strong>135</strong> — Centro de Asistencia al Suicida (24h)</li>
-        <li>🇨🇴 Colombia: <strong>106</strong> — Línea 106 Salud Mental</li>
+        <li>🇨🇴 Colombia: <strong>106</strong> — Línea Salud Mental (24h)</li>
         <li>🇨🇱 Chile: <strong>600 360 7777</strong> — ACHS Salud Mental</li>
-        <li>🌎 Internacional: <a href="https://findahelpline.com" target="_blank" style="color:#c2410c">findahelpline.com</a></li>
+        <li>🇻🇪 Venezuela: <strong>0800-SALUD-00</strong> o busca urgencias psiquiátricas cercanas</li>
+        <li>🌎 Otro país: <a href="https://findahelpline.com" target="_blank" style="color:#c2410c;font-weight:600">findahelpline.com</a></li>
       </ul>
-      <div class="crisis-verse">«Echad toda vuestra ansiedad sobre él, porque él tiene cuidado de vosotros.» — 1 Pedro 5:7</div>
-      <p class="crisis-sub">Dios te ama profundamente. Hay personas reales esperando ayudarte ahora mismo. 🙏</p>
+      <div class="crisis-verse">«Jehová está cerca de los quebrantados de corazón; y salva a los contritos de espíritu.» — Salmos 34:18</div>
+      <p class="crisis-sub">Esta app no puede darte la ayuda que mereces en este momento. Hay personas reales esperando ayudarte ahora. 🙏</p>
     </div>`;
   document.getElementById('chatArea').appendChild(div);
   scrollChat();
