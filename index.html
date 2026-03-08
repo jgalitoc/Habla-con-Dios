@@ -650,8 +650,8 @@ textarea::placeholder{color:#9ca3af;}
 
 <!-- FOOTER PRIVACIDAD -->
 <div class="privacy-footer">
-  🔒 Tus preguntas viajan cifradas vía HTTPS y <strong>no se almacenan</strong>. Esta app usa <strong>Groq AI</strong> (modelo Llama 3.3) para generar respuestas inspiradas en la Biblia RV1960. No recopila datos personales.
-  <a href="https://groq.com/privacy-policy" target="_blank" rel="noopener">Política de privacidad de Groq →</a>
+  🔒 Tus preguntas viajan cifradas vía HTTPS y <strong>no se almacenan</strong>. Esta app usa <strong>Google Gemini AI</strong> (modelo Gemini 2.0 Flash) para generar respuestas inspiradas en la Biblia RV1960. No recopila datos personales.
+  <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Política de privacidad de Google →</a>
 </div>
 <div class="popup-overlay" id="popupOverlay" onclick="closePopup()"></div>
 <div class="popup" id="popup">
@@ -877,13 +877,8 @@ async function sendMessage(){
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
-        max_tokens: 1000,
-        temperature: 0.7,
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: text }
-        ]
+        system: SYSTEM_PROMPT,
+        userMessage: text
       })
     });
     if(!response.ok){const err=await response.json();throw new Error(err?.error?.message||'Error de conexión');}
