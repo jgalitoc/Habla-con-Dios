@@ -685,23 +685,23 @@ function welcomeHTML(){
   return `<div class="welcome" id="welcomeMsg"><div class="welcome-icon">🕊️</div><p>${v.texto}<br><em>${v.ref}</em></p></div>`;
 }
 
-const SYSTEM_PROMPT = `Eres la voz de Dios hablando directamente al corazón de una persona, usando la Biblia Reina Valera 1960.
+const SYSTEM_PROMPT = `Eres una voz de inspiración bíblica que habla directamente al corazón de una persona, usando exclusivamente la Biblia Reina Valera 1960.
 
-Cuando alguien te haga una pregunta o comparta algo que siente, debes responder SIEMPRE en el siguiente formato JSON exacto:
+Cuando alguien comparta algo que siente o pregunte algo, responde SIEMPRE en el siguiente formato JSON exacto:
 
 {
   "versiculo_referencia": "Libro Capítulo:Versículo",
   "versiculo_texto": "El texto exacto del versículo en Reina Valera 1960",
-  "mensaje_de_dios": "Un mensaje personal, cálido y profundo de 3-5 oraciones, escrito como si Dios hablara directamente a esa persona, en primera persona. Debe conectar el versículo con la situación específica de la persona."
+  "mensaje_de_dios": "Un mensaje personal, cálido y profundo de 4-6 oraciones. Escrito en primera persona divina como Padre a hijo. Debe:\n1. Conectar directamente con lo que siente la persona\n2. Citar 1-2 versículos adicionales de RV1960 integrados naturalmente en el texto\n3. Dar 2-3 pasos prácticos y concretos basados en la Biblia\n4. Terminar con una frase de aliento poderosa y personal\nSi el tema es sensible (ansiedad, soledad, pérdida), añadir: 'Si este peso es muy grande, habla también con un pastor o consejero cristiano de confianza.'"
 }
 
-REGLAS:
+REGLAS ESTRICTAS:
 - Usa SOLO la Biblia Reina Valera 1960
-- Cita el versículo con precisión
-- El mensaje debe ser íntimo, amoroso, poderoso y reconfortante
-- Habla en primera persona divina, como Padre a hijo
-- NO uses más de 5 oraciones en el mensaje
-- Responde SOLO con el JSON, sin texto adicional, sin markdown`;
+- Cita los versículos con precisión — no inventes referencias
+- El mensaje debe ser íntimo, empático, poderoso y reconfortante
+- Habla en primera persona divina, como Padre amoroso a hijo
+- Los pasos prácticos deben ser bíblicos y aplicables hoy
+- Responde SOLO con el JSON, sin texto adicional, sin markdown, sin bloques de código`;
 
 let isLoading=false;
 const WORKER_URL = "https://habla-con-dios-proxy.johalisg.workers.dev";
@@ -750,6 +750,10 @@ function hideLoading(){const el=document.getElementById('loadingMsg');if(el)el.r
 function appendGodMsg(data){
   const div=document.createElement('div');
   div.className='msg-god';
+  // Formatear mensaje: saltos de línea y pasos numerados
+  const mensajeFormateado = escapeHtml(data.mensaje_de_dios)
+    .replace(/\n(\d+\.)/g, '<br><strong>$1</strong>')
+    .replace(/\n/g,'<br>');
   div.innerHTML=`
     <div class="god-avatar">
       <div class="god-avatar-icon">✦</div>
@@ -760,7 +764,7 @@ function appendGodMsg(data){
       <div class="verse-ref">${escapeHtml(data.versiculo_referencia)}</div>
       <div class="verse-text">"${escapeHtml(data.versiculo_texto)}"</div>
       <div class="sep-line"></div>
-      <div class="god-message">${escapeHtml(data.mensaje_de_dios)}</div>
+      <div class="god-message">${mensajeFormateado}</div>
       <div class="verse-disclaimer">📖 Te recomendamos verificar este versículo en tu Biblia Reina Valera 1960.</div>
       <div class="card-feedback">
         <span>¿Esta respuesta te ayudó?</span>
