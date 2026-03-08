@@ -271,6 +271,16 @@ h1{
 .crisis-title{font-size:15px;font-weight:700;color:#c2410c;margin-bottom:10px;}
 .crisis-card ul{margin:10px 0 10px 16px;color:#374151;}
 .crisis-card li{margin-bottom:4px;}
+.crisis-verse{
+  background:#fff;
+  border-left:3px solid #fed7aa;
+  border-radius:4px 8px 8px 4px;
+  padding:10px 12px;
+  font-style:italic;
+  font-size:13px;
+  color:#92400e;
+  margin:12px 0;
+}
 .crisis-sub{font-size:13px;color:#9a3412;font-style:italic;margin-top:10px;}
 
 /* LOADING */
@@ -801,15 +811,18 @@ function showCrisisAlert(){
   div.className='msg-god';
   div.innerHTML=`
     <div class="crisis-card">
-      <div class="crisis-title">🆘 Parece que estás pasando por un momento muy difícil</div>
-      <p>Esta app no puede reemplazar la ayuda profesional que mereces. Por favor comunícate con alguien de confianza o una línea de crisis:</p>
+      <div class="crisis-title">🆘 Lo que sientes importa. No estás solo.</div>
+      <p>Esta app no puede darte la ayuda que mereces en este momento. Por favor contacta <strong>ahora mismo</strong> a alguien de confianza o una línea de crisis:</p>
       <ul>
-        <li>🇪🇸 España: <strong>024</strong> (línea de atención a conducta suicida)</li>
-        <li>🇲🇽 México: <strong>800 290 0024</strong> (SAPTEL 24h)</li>
-        <li>🇦🇷 Argentina: <strong>135</strong> (Centro de Asistencia al Suicida)</li>
-        <li>🌎 Internacional: <strong>findahelpline.com</strong></li>
+        <li>🇪🇸 España: <strong>024</strong> — Línea de atención a la conducta suicida (24h)</li>
+        <li>🇲🇽 México: <strong>800 290 0024</strong> — SAPTEL (24h, gratuito)</li>
+        <li>🇦🇷 Argentina: <strong>135</strong> — Centro de Asistencia al Suicida (24h)</li>
+        <li>🇨🇴 Colombia: <strong>106</strong> — Línea 106 Salud Mental</li>
+        <li>🇨🇱 Chile: <strong>600 360 7777</strong> — ACHS Salud Mental</li>
+        <li>🌎 Internacional: <a href="https://findahelpline.com" target="_blank" style="color:#c2410c">findahelpline.com</a></li>
       </ul>
-      <p class="crisis-sub">No estás solo. Hay personas reales que quieren ayudarte. 🙏</p>
+      <div class="crisis-verse">«Echad toda vuestra ansiedad sobre él, porque él tiene cuidado de vosotros.» — 1 Pedro 5:7</div>
+      <p class="crisis-sub">Dios te ama profundamente. Hay personas reales esperando ayudarte ahora mismo. 🙏</p>
     </div>`;
   document.getElementById('chatArea').appendChild(div);
   scrollChat();
@@ -835,10 +848,16 @@ async function sendMessage(){
   if(!text)return;
 
   // Detección de crisis
-  const palabrasCrisis=['quiero morir','me quiero matar','suicidio','suicidarme','no quiero vivir','acabar con mi vida','quitarme la vida'];
+  const palabrasCrisis=[
+    'quiero morir','me quiero matar','suicidio','suicidarme','no quiero vivir',
+    'acabar con mi vida','quitarme la vida','no vale la pena vivir','mejor muerto',
+    'mejor muerta','hacerme daño','cortarme','ya no quiero seguir','desaparecer para siempre',
+    'pensando en quitarme','ganas de morir'
+  ];
   const textLower=text.toLowerCase();
   if(palabrasCrisis.some(p=>textLower.includes(p))){
     input.value='';input.style.height='auto';
+    appendUserMsg(text);
     showCrisisAlert();
     return;
   }
