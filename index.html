@@ -215,9 +215,14 @@ h1{
   font-family:'Inter',sans-serif;
   cursor:pointer;
   color:#374151;
-  transition:.2s;
+  transition:all 0.2s ease;
 }
-.sug-btn:hover{background:#e5e7eb;}
+.sug-btn:hover{
+  background:#3b82f6;
+  color:white;
+  transform:translateY(-2px);
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
 
 /* CARD INPUT */
 .input-card{
@@ -316,7 +321,6 @@ textarea::placeholder{color:#9ca3af;}
     <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
     Inicio
   </button>
-  <button onclick="cambiarApiKey()">🔑 API Key</button>
 </div>
 
 <div class="container">
@@ -411,32 +415,7 @@ REGLAS:
 
 let isLoading = false;
 
-function getApiKey(){ return localStorage.getItem('hcd_apikey') || ''; }
-
-function pedirApiKey() {
-  const key = prompt('🔑 Ingresa tu API Key de Anthropic:\n(console.anthropic.com)');
-  if (key && key.startsWith('sk-')) {
-    localStorage.setItem('hcd_apikey', key.trim());
-    return key.trim();
-  } else if (key) {
-    alert('La API Key no parece válida. Debe comenzar con "sk-"');
-  }
-  return null;
-}
-
-function cambiarApiKey(){
-  const actual = getApiKey();
-  const msg = actual
-    ? `Key actual: ...${actual.slice(-6)}\n\nIngresa una nueva (o cancela para mantener):` 
-    : '🔑 Ingresa tu API Key de Anthropic\n(console.anthropic.com):';
-  const key = prompt(msg);
-  if(key && key.startsWith('sk-')){
-    localStorage.setItem('hcd_apikey', key.trim());
-    alert('✅ API Key guardada.');
-  } else if(key){
-    alert('⚠️ La key debe comenzar con "sk-"');
-  }
-}
+const WORKER_URL = "https://habla-con-dios-proxy.johalisg.workers.dev";
 
 function autoResize(el){
   el.style.height='auto';
@@ -522,23 +501,15 @@ async function sendMessage(){
   const text=input.value.trim();
   if(!text)return;
 
-  let apiKey=getApiKey();
-  if(!apiKey){apiKey=pedirApiKey();if(!apiKey)return;}
-
   isLoading=true;
   document.getElementById('sendBtn').disabled=true;
   input.value='';input.style.height='auto';
   appendUserMsg(text);
   showLoading();
   try{
-    const response=await fetch('https://api.anthropic.com/v1/messages',{
+    const response=await fetch(WORKER_URL,{
       method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':apiKey,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
+      headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         model:'claude-sonnet-4-20250514',
         max_tokens:1000,
