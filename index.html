@@ -222,6 +222,15 @@ h1{
   color:#374151;
 }
 
+.verse-disclaimer{
+  margin-top:12px;
+  padding-top:10px;
+  border-top:1px dashed #f3f4f6;
+  font-size:11px;
+  color:#9ca3af;
+  font-style:italic;
+}
+
 /* LOADING */
 .loading-msg{
   align-self:flex-start;
@@ -682,6 +691,7 @@ function appendGodMsg(data){
       <div class="verse-text">"${escapeHtml(data.versiculo_texto)}"</div>
       <div class="sep-line"></div>
       <div class="god-message">${escapeHtml(data.mensaje_de_dios)}</div>
+      <div class="verse-disclaimer">📖 Te recomendamos verificar este versículo en tu Biblia Reina Valera 1960.</div>
     </div>`;
   document.getElementById('chatArea').appendChild(div);
   scrollChat();
