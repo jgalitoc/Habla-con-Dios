@@ -651,11 +651,13 @@ function useSuggestion(btn){
   sendMessage();
 }
 function appendUserMsg(text){
-  hideWelcome();
+  // Limpiar todo el chat antes de mostrar la nueva pregunta
+  const chat=document.getElementById('chatArea');
+  chat.innerHTML='';
   const div=document.createElement('div');
   div.className='msg-user';
   div.textContent=text;
-  document.getElementById('chatArea').appendChild(div);
+  chat.appendChild(div);
   scrollChat();
 }
 function showLoading(){
